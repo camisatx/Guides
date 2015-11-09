@@ -136,6 +136,19 @@ Create a repo tag based on the current branch checked out
 git tag <tag name>
 ```
 
+Create a tag to indicate deployed code with timestamp
+
+```bash
+# Generate a timestamp
+export TAG=`date +DEPLOYED-%F/%H%M`
+#
+# Show the tag ("DEPLOYED-<timestamp>")
+echo $TAG
+#
+git tag $TAG
+```
+
+
 Push the tag to the remote repo
 
 ```bash
