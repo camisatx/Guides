@@ -65,8 +65,11 @@ sudo nano /etc/apt/apt.conf.d/10periodic
 > Recommended options to use within this file. Copy and paste the lines below if the file is empty/new.
 >
 > APT::Periodic::Update-Package-Lists "1";
+>
 > APT::Periodic::Download-Upgradeable-Packages "1";
+>
 > APT::Periodic::AutocleanInterval "7";
+>
 > APT::Periodic::Unattended-Upgrade "1";
 
 
@@ -103,9 +106,7 @@ sudo nano /etc/sudoers.d/<new user name>
 <new user name> ALL=(ALL) NOPASSWD:ALL
 ```
 
-Add a SSH key for this new user (especially pertinent if system access via only passwords are disabled).
-
-ToDo: Add flag to SSH Key section
+Add a [SSH key](#ssh-key) for this new user (especially pertinent if system access via only passwords are disabled).
 
 
 # Monitor Sensor Temperatures
