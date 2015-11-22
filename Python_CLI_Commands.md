@@ -55,6 +55,7 @@ pip install virtualenv
 #
 # Install virtualenv into a Python version which isn't the system default
 # Windows: /c/Users/<User>/<Python Install Folder>/Scripts/pip.exe install virtualenv
+# Linux: /home/<User>/<Python Install Folder>/bin/pip install virtualenv
 ```
 
 Make a directory one folder up (from your main project code) for the virtual environment called 'virtualenv'
