@@ -192,3 +192,37 @@ git log
 #   --graph: Show a commit tree
 #   --oneline: Fit each commit on one line, showing the commit hash and commit message
 ```
+
+
+# Git Subtree Merge
+
+Merge a repo into the subdirectory of another repo while maintaining the file histories (mostly).
+
+Structure follows Flimm's answer [here] (https://stackoverflow.com/questions/13040958/merge-two-git-repositories-without-breaking-file-history).
+
+```bash
+# Add the second repo as a remote of the main repo
+cd first_git_repo
+git remote add second_repo git@github.com:<username>/<repo name>.git
+#
+# Make sure you've downloaded all of the second repo's commits
+git fetch second_repo
+#
+# Create a local branch from the second repo's master branch
+git branch branch_from_second_repo second_repo/master
+#
+# Move all of the second repo's master branch files into the folder structure you want it to be in in the main repo
+git checkout branch_from_second_repo
+mkdir subdir
+cd subdir
+mkdir subsubdir
+git ls-tree -z --name-only HEAD | xargs -0 -I {} git mv {} subsubdir/
+git commit -m "Moved all second dir files into the subsubdir folder"
+#
+# Merge the second branch into the main repo's master branch
+git checkout master
+git merge branch_from_second_repo
+#
+# Push the merge to the remot server
+git push
+```
