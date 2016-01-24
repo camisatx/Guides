@@ -11,7 +11,7 @@ This file covers the steps required to install the DNSCrypt using the d0wn serve
 7. insert a row below row 1 and input the data from steps 8-20
 8. column A: d0wn-rd-ns1
 9. column B: d0wn server Ramdomizer
-10. colum C: Server provided by Martin 'd0wn' Albus
+10. column C: Server provided by Martin 'd0wn' Albus
 11. column D: Random
 12. leave column E blank
 13. column F: https://dns.d0wn.biz

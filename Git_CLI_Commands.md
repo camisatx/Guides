@@ -4,6 +4,8 @@ This file covers many of the common commands used with Git. Since Git is not pla
 
 The purpose of this file is to help make using Git via command line less intimidating. There will always be a place for SourceTree and VCS within PyCharm, but using Git with the command line has very high efficiency for certain tasks.
 
+For advanced git functionality, read [A Hacker's Guide to Git] (http://wildlyinaccurate.com/a-hackers-guide-to-git/).
+
 
 # Basic Git Operations
 
@@ -225,4 +227,39 @@ git merge branch_from_second_repo
 #
 # Push the merge to the remot server
 git push
+```
+
+
+# Git Binary Search for Broken Code
+
+Determine which commit introduced a change that broke the code by searching through the commit history.
+
+First start the bisect tool:
+```bash
+git bisect start
+```
+
+Tell git that the current commit is broken:
+```bash
+git bisect bad
+```
+
+Indicate the last commit that you know was working:
+```bash
+git bisect good <commit/tag>
+```
+
+Git will then checkout a commit between the two, asking you to verify if the code is working. If it is working, run:
+```bash
+git bisect good
+```
+
+If the checked out code is not working, run:
+```bash
+git bisect bad
+```
+
+Eventually, git will narrow down the commits to find the one that introduced the broken code. After finding the incriminating commit, reset the code to head with:
+```bash
+git bisect reset
 ```
