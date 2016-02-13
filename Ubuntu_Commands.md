@@ -138,23 +138,32 @@ watch -n 1 -d sensors
 
 # Security
 
-## Disable password based login
+## Disable root and password based login
 
 This is done as a security feature. It forces all users to use a SSH key pair to get access to the server. Password brute force attacks become a moot point after this is done. :)
 
 ```bash
 sudo nano /etc/ssh/sshd_config
-#
-# Change the password authentication to 'no'
-# **PasswordAuthentication no**
-#
-# Restart the SSH service
+```
+
+Disable password based logins by changing PasswordAuthentication from 'yes' to 'no':
+
+```bash
+PasswordAuthentication no
+```
+
+Disable root SSH login by changing PermitRootLogin from 'yes' to 'no':
+
+```bash
+PermitRootLogin no
+```
+
+Restart the SSH service
+
+```bash
 sudo service ssh restart
 ```
 
-## Disable insecure SSH methods
-
-[stribikia](https://stribika.github.io/2015/01/04/secure-secure-shell.html) has an excellent guide on GitHub to securing your SSH connections.
 
 ## UFW Firewall
 
@@ -181,14 +190,15 @@ ufw allow 443/tcp
 ufw enable
 ```
 
+
 ## Security Guides
 
 [Introduction to Securing your VPS by Digital Ocean](https://www.digitalocean.com/community/tutorials/an-introduction-to-securing-your-linux-vps)
 
 
-# SSH Key
+## SSH Key
 
-## Create SSH key pair on the **local machine**
+#### Create SSH key pair on the **local machine**
 
 Keep the default directory, but you can change the specific name of the key pair (useful for application/server specific keys). Also, enter a passphrase for the key pair, if you want extra security.
 
@@ -196,7 +206,29 @@ Keep the default directory, but you can change the specific name of the key pair
 ssh-keygen
 ```
 
-## Place the public key on the **server**
+Generate a RSA (default) key with a size of 4096 bits (default of 2048 bits; max of 16384 bits):
+
+```bash
+ssh-keygen -b 4096
+```
+
+Generate a Ed25519 key (256 bits) (stronger and faster than RSA):
+
+```bash
+ssh-keygen -t ed25519
+```
+
+#### Place the public key on the **server**
+
+##### [Simple method] (https://wiki.archlinux.org/index.php/SSH_keys)
+
+Copies the specified SSH public key to the ~/.ssh/authorized_keys file on the remote server.
+
+```bash
+ssh-copy-id -i ~/.ssh/id_ed25519.pub <user>@<ip address>
+```
+
+##### Manual method
 
 Create a *.ssh* folder in the user's home directory
 
@@ -220,3 +252,85 @@ Restrict access to these new files
 chmod 700 .ssh
 chmod 644 .ssh/authorized_keys
 ```
+
+#### Disable insecure SSH methods
+
+[stribikia](https://stribika.github.io/2015/01/04/secure-secure-shell.html) has an excellent guide on GitHub to securing your SSH connections.
+
+
+## Fail2Ban
+
+#### Install Fail2Ban
+
+```bash
+sudo apt-get install fail2ban
+```
+
+#### Edit the config files
+
+Copy the default *jail.conf* file to a new file called *jail.local*:
+
+```bash
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+```
+
+Open the new file:
+
+```bash
+sudo nano /etc/fail2ban/jail.local
+```
+
+Increase the ban time to a full day (seconds):
+
+```bash
+bantime = 86400
+```
+
+#### Restart Fail2Ban
+
+```bash
+sudo service fail2ban restart
+```
+
+
+## Maldet (LMD) with ClamAV
+
+Install and setup the Maldet malware scanner using ClamAV binary files (improves speed and malware coverage).
+
+#### Install [Maldet] (https://www.rfxn.com/projects/linux-malware-detect) (Linux Malware Detect; LMD)
+
+```bash
+cd /usr/local/src/
+sudo wget http://www.rfxn.com/downloads/maldetect-current.tar.gz
+sudo tar -xzf maldetect-current.tar.gz
+cd maldetect-*
+sudo sh ./install.sh
+```
+
+#### Configure LMD settings
+
+Open the LMD configuration files:
+
+```bash
+sudo nano /usr/local/maldetect/conf.maldet
+```
+
+Change *quar_hits*, *quar_clean*, and *clam_av* to **"1"**. Optional: change *quar_susp* to **"1"**.
+
+#### Install ClamAV:
+
+```bash
+sudo apt-get install clamtk clamav
+```
+
+#### Test install
+
+```bash
+sudo maldet -d
+sudo maldet -u
+sudo maldet -a /home/
+```
+
+Make sure that LMD finds the ClamAV binary files. Look for this in the output from running "maldet -a /":
+
+> maldet(####): {scan} found clamav binary at /usr/bin/clamscan, using clamav scanner engine...
