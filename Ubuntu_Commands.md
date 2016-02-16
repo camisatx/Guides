@@ -292,6 +292,20 @@ bantime = 86400
 sudo service fail2ban restart
 ```
 
+#### View status of jails
+
+View the enabled jail list:
+
+```bash
+sudo fail2ban-client status
+```
+
+View the status of a specific jail (including failed attempts and banned IP addresses):
+
+```bash
+sudo fail2ban-client status <jail name>
+```
+
 
 ## Maldet (LMD) with ClamAV
 
