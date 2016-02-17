@@ -1,7 +1,21 @@
 # Ubuntu Command Line Interface Commands
 
 This file includes a myriad of Ubuntu commands. Hopefully you can pick up one or two commands you never knew about previously.
- 
+
+ Contents:
+ - [Connect to a VPS via SSH](#connect-to-a-vps-via-ssh)
+ - [System Updates](#system-updates)
+    - [Automate System Updates](#automate-system-updates)
+ - [Create a System User](#create-a-system-user)
+ - [Security](#security)
+    - [Security Guide](#security-guide)
+    - [UFW Firewall](#ufw-firewall)
+    - [SSH Key](#ssh-key)
+    - [Disable root and password based login](#disable-root-and-password-based-login)
+    - [Fail2Ban](#fail2ban)
+    - [Maldet (LMD) with ClamAV](#maldet-(lmd)-with-clamav)
+ - [Monitor Sensor Temperatures](#monitor-sensor-temperatures)
+
 
 # Connect to a VPS via SSH
 
@@ -62,8 +76,8 @@ sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
 sudo nano /etc/apt/apt.conf.d/10periodic
 ```
 
-> Recommended options to use within this file. Copy and paste the lines below if the file is empty/new.
->
+Recommended options to use within this file. Copy and paste the lines below if the file is empty/new.
+
 > APT::Periodic::Update-Package-Lists "1";
 >
 > APT::Periodic::Download-Upgradeable-Packages "1";
@@ -109,60 +123,11 @@ sudo nano /etc/sudoers.d/<new user name>
 Add a [SSH key](#ssh-key) for this new user (especially pertinent if system access via only passwords are disabled).
 
 
-# Monitor Sensor Temperatures
-
-Install the sensor packages
-
-```bash
-sudo apt-get install lm-sensors sensors-applet
-```
-
-Detects all the sensors in the system
-
-```bash
-sudo sensors-detect
-```
-
-View the current temperatures
-
-```bash
-sensors
-```
-
-Display sensor temperatures every second, highlighting differences
-
-```bash
-watch -n 1 -d sensors
-```
-
-
 # Security
 
-## Disable root and password based login
+## Security Guides
 
-This is done as a security feature. It forces all users to use a SSH key pair to get access to the server. Password brute force attacks become a moot point after this is done. :)
-
-```bash
-sudo nano /etc/ssh/sshd_config
-```
-
-Disable password based logins by changing PasswordAuthentication from 'yes' to 'no':
-
-```bash
-PasswordAuthentication no
-```
-
-Disable root SSH login by changing PermitRootLogin from 'yes' to 'no':
-
-```bash
-PermitRootLogin no
-```
-
-Restart the SSH service
-
-```bash
-sudo service ssh restart
-```
+[Introduction to Securing your VPS by Digital Ocean](https://www.digitalocean.com/community/tutorials/an-introduction-to-securing-your-linux-vps)
 
 
 ## UFW Firewall
@@ -176,24 +141,25 @@ UFW firewall is a default firewall included with Ubuntu. For most situations, it
 View the current status of UFW (if it is active or not). Also, use it to verify you've enabled the correct ports.
 
 ```bash
-ufw status
+sudo ufw status
 ```
 
-Basic settings I use on my web servers:
+Settings I use on my web servers:
 
 ```bash
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow ssh
-ufw allow www
-ufw allow 443/tcp
-ufw enable
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw enable
 ```
 
+To delete an existing rule, run:
 
-## Security Guides
-
-[Introduction to Securing your VPS by Digital Ocean](https://www.digitalocean.com/community/tutorials/an-introduction-to-securing-your-linux-vps)
+```bash
+sudo ufw delete allow 80
+```
 
 
 ## SSH Key
@@ -256,6 +222,33 @@ chmod 644 .ssh/authorized_keys
 #### Disable insecure SSH methods
 
 [stribikia](https://stribika.github.io/2015/01/04/secure-secure-shell.html) has an excellent guide on GitHub to securing your SSH connections.
+
+
+## Disable root and password based login
+
+This is done as a security feature. It forces all users to use a SSH key pair to get access to the server. Password brute force attacks become a moot point after this is done. :)
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+Disable password based logins by changing PasswordAuthentication from 'yes' to 'no':
+
+```bash
+PasswordAuthentication no
+```
+
+Disable root SSH login by changing PermitRootLogin from 'yes' to 'no':
+
+```bash
+PermitRootLogin no
+```
+
+Restart the SSH service
+
+```bash
+sudo service ssh restart
+```
 
 
 ## Fail2Ban
@@ -348,3 +341,30 @@ sudo maldet -a /home/
 Make sure that LMD finds the ClamAV binary files. Look for this in the output from running "maldet -a /":
 
 > maldet(####): {scan} found clamav binary at /usr/bin/clamscan, using clamav scanner engine...
+
+
+# Monitor Sensor Temperatures
+
+Install the sensor packages
+
+```bash
+sudo apt-get install lm-sensors sensors-applet
+```
+
+Detects all the sensors in the system
+
+```bash
+sudo sensors-detect
+```
+
+View the current temperatures
+
+```bash
+sensors
+```
+
+Display sensor temperatures every second, highlighting differences
+
+```bash
+watch -n 1 -d sensors
+```
