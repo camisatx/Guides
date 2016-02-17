@@ -13,7 +13,7 @@ This file includes a myriad of Ubuntu commands. Hopefully you can pick up one or
     - [SSH Key](#ssh-key)
     - [Disable root and password based login](#disable-root-and-password-based-login)
     - [Fail2Ban](#fail2ban)
-    - [Maldet (LMD) with ClamAV](#maldet-(lmd)-with-clamav)
+    - [Maldet (LMD) with ClamAV](#maldet-lmd-with-clamav)
  - [Monitor Sensor Temperatures](#monitor-sensor-temperatures)
 
 
