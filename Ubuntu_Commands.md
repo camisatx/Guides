@@ -345,6 +345,64 @@ Make sure that LMD finds the ClamAV binary files. Look for this in the output fr
 > maldet(####): {scan} found clamav binary at /usr/bin/clamscan, using clamav scanner engine...
 
 
+# PostgreSQL
+
+### Install the latest PostgreSQL
+
+Add the official PostgreSQL repository
+```bash
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d.pgdg.list'
+```
+
+Import the GPG key of the repository so that apt can check the validity of the package
+```bash
+wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
+```
+
+Update the package list
+```bash
+sudo apt-get update
+```
+
+Install PostgreSQL
+```bash
+sudo apt-get install postgresql postgresql-contrib
+```
+
+Optional - Install pgAdmin3
+```bash
+sudo apt-get install pgadmin3
+```
+
+### Connect to Postgres Server
+
+Change to the postgres user and start the psql shell
+```bash
+sudo -u postgres psql
+```
+
+Disconnect from the postgres server
+```psql
+\q
+```
+
+Change back from the postgres user
+```bash
+exit
+```
+
+### Allow a New User to Get All Database Permissions
+
+Grant all privileges on the current database to the new user for all tables. If any table has any serial columns utilizing sequences, you can grant the new user all privileges for sequences.
+ 
+ For security reasons, it is best to only grant the privileges the new user actually uses.
+ 
+```sql
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO <new user>;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to <new user>;
+```
+
+
 # Monitor Sensor Temperatures
 
 Install the sensor packages

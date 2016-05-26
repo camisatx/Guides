@@ -94,6 +94,36 @@ which python
 ```
 
 
+# Psycopg2
+
+Install psycopg2
+
+### Ubuntu
+
+First, install libpq-dev:
+```bash
+sudo apt-get install libpq-dev python-dev
+```
+Might also require:
+```bash
+sudo apt-get install postgresql-server-dev-all
+```
+
+Then use PIP to install psycopg2:
+```bash
+pip install psycopg2
+```
+
+### CentOS
+```bash
+sudo yum install python-devel postgresql-devel
+pip install psycopg2
+```
+
+### Windows
+It is easiest to use the prebuilt binary Psycopg wheel provided by Christoph Gohlke on his [Python Extension Packages](http://www.lfd.uci.edu/~gohlke/pythonlibs/) page.
+
+
 # Fabric
 
 [Fabric](http://www.fabfile.org/) is a **Python 2.7 ONLY** library for application deployment and system administration tasks. It provides operations on a local or remote machine (via ssh).
