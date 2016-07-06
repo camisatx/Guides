@@ -96,9 +96,9 @@ which python
 
 # Psycopg2
 
-Install psycopg2
+### Install psycopg2
 
-### Ubuntu
+##### Ubuntu
 
 First, install libpq-dev:
 ```bash
@@ -114,13 +114,13 @@ Then use PIP to install psycopg2:
 pip install psycopg2
 ```
 
-### CentOS
+##### CentOS
 ```bash
 sudo yum install python-devel postgresql-devel
 pip install psycopg2
 ```
 
-### Windows
+##### Windows
 It is easiest to use the prebuilt binary Psycopg wheel provided by Christoph Gohlke on his [Python Extension Packages](http://www.lfd.uci.edu/~gohlke/pythonlibs/) page.
 
 

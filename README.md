@@ -6,6 +6,7 @@ Contents:
 - [DNSCrypt Random Server Setup](../master/DNSCrypt_Random_Server_Instructions.md)
 - [Git Command Line Commands](../master/Git_CLI_Commands.md)
 - [Python Command Line Commands](../master/Python_CLI_Commands.md)
+- [PostgreSQL Backup Strategies](../master/PostgreSQL_Backup_Strategies.md)
 - [Ubuntu Server Commands](../master/Ubuntu_Commands.md)
   - [Server Setup Script](../master/scripts/new_server_setup)
 
