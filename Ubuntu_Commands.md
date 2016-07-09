@@ -14,6 +14,7 @@ This file includes a myriad of Ubuntu commands. Hopefully you can pick up one or
     - [Disable root and password based login](#disable-root-and-password-based-login)
     - [Fail2Ban](#fail2ban)
     - [Maldet (LMD) with ClamAV](#maldet-lmd-with-clamav)
+ - [PostgreSQL](#postgresql)
  - [Monitor Sensor Temperatures](#monitor-sensor-temperatures)
 
 I made a [bash script](../master/scripts/new_server_setup) with many of these commands included. This is useful for securing new servers you spin up. Let me know if you think there is anything that should be added to this.
