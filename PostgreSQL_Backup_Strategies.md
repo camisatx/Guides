@@ -22,7 +22,7 @@ The easiest way to backup a database is to dump the values into an object and st
 
 ### Custom format dump with good compression
 
-Using the custom format variable of ```-Fc``` with pd_dump, it compresses the data while still being readable. Additionally, using the ```-Z<n>``` variable, you can specify the compression level between 0 (off; -Z0) and 9 (max; -Z9), with 6 being the default of ```-Fc```.
+When using the custom format flag ```-Fc``` with pd_dump, the process will compresses the data while still being human readable. Additionally, when using the ```-Z<n>``` flag, you can specify the compression level between 0 (off; -Z0) and 9 (max; -Z9), with 6 being the default of ```-Fc```.
 
 ### Choosing where to run the dump
 
@@ -51,7 +51,7 @@ pg_dump -Z9 -Fc -U postgres mydb > mydb.dump
 Backing up the pySecMaster with default settings:
 
 ```bash
-C:\Program Files\PostgreSQL\9.5\bin\pg_dump -Fc -U postgres pysecmaster > C:\Users\joshs\Desktop\pysecmaster_20160702.dump
+"C:\Program Files\PostgreSQL\9.5\bin\pg_dump" -Fc -U postgres pysecmaster > C:\Users\joshs\Desktop\pysecmaster_%date:~-4,4%%date:~-7,2%%date:~-10,2%t%time:~0,2%%time:~3,2%%time:~6,2%.dump
 ```
 
 #### Remote Backup Server
@@ -76,15 +76,15 @@ Along with dumping the actual database values, it is important to also dump the 
 Backing up the pySecMaster global objects:
 
 ```bash
-pg_dumpall -g -U postgres > C:\Users\joshs\Desktop\postgres_misc_20160702.dump
+"C:\Program Files\PostgreSQL\9.5\bin\pg_dumpall" -g -U postgres > C:\Users\joshs\Desktop\postgres_misc_%date:~-4,4%%date:~-7,2%%date:~-10,2%t%time:~0,2%%time:~3,2%%time:~6,2%.dump
 ```
 
 
 # Restore the Dump
 
-Half of backing up databases involve being able to restore the data in a timely manner. ```pg_restore``` allows for loading the previously dumped data into a fresh database structure.
+Backing up databases is not only about dumping database data. The database dump must be able to be quickly and accurately restored. It is essential to test the database dump to ensure that in a crisis, you can get your database up and running as quickly as possible.
 
-However, ```pg_restore``` starts to fail with databases over 1TB because it can take far too long to restore the data dump. This is when it is pertinent to use a replicated database system to prevent having to restore massive databases from scratch.
+In Postgres, ```pg_restore``` allows for loading the previously dumped data into a fresh database structure. However, ```pg_restore``` starts to fail with databases over 1TB because it can take far too long to restore the data dump. If this is the case, then it is pertinent to use a replicated database system to prevent having to restore massive databases from scratch.
 
 [pg_restore](https://www.postgresql.org/docs/current/static/app-pgrestore.html)
 
