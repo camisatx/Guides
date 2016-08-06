@@ -375,6 +375,16 @@ Optional - Install pgAdmin3
 sudo apt-get install pgadmin3
 ```
 
+A new user of 'postgres' is created after PostgreSQL is installed.
+
+Change the password of the new user 'postgres'
+```bash
+$ sudo passwd postgres
+Enter new UNIX password:
+Retype new UNIX password:
+passwd: password updated successfully
+```
+
 ### Connect to Postgres Server
 
 Change to the postgres user and start the psql shell
@@ -390,6 +400,52 @@ Disconnect from the postgres server
 Change back from the postgres user
 ```bash
 exit
+```
+
+### Change Data Directory
+
+If you need to have Postgres store all databases on a separate disk, you must change the default data directory to a folder on the new disk. I do this so that I can store my data directory on a large RAID storage array instead of the small SSD boot drive.
+
+Andy Wang has an excellent [guide](https://climber2002.github.io/blog/2015/02/07/install-and-configure-postgresql-on-ubuntu-14-dot-04/) on this, which is where I sourced these commands from.
+
+Create a new folder on the storage array where the new Postgres data directory should be stored
+```bash
+mkdir Database
+```
+
+Change the owner of the folder to postgres
+```bash
+sudo chown -R postgres:postgres /Database
+```
+
+Initialize this folder as a Postgres data directory, using the postgres user to perform this task (su postgres)
+```bash
+su postgres
+/usr/lib/postgresql/9.5/bin/initdb -D /Database
+exit
+```
+
+Stop the Postgres server to prevent issues from arising
+```bash
+sudo service postgresql stop
+```
+
+Update the postgresql.conf file to link to the new data directory
+```bash
+sudo nano /etc/postgresql/9.5/main/postgresql.conf
+```
+And change the old data directory link of
+```bash
+data_directory = 'var/lib/postgresql/9.5/main'
+```
+to the new data directory folder
+```bash
+data_directory = '/Database'
+```
+
+After saving the file, restart the Postgres server
+```bash
+sudo service postgresql start
 ```
 
 ### Allow a New User to Get All Database Permissions
