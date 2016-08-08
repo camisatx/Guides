@@ -16,9 +16,7 @@ Alternatively, you can also use live replication of the database, creating a fai
 
 # Dump Specified Database
 
-The easiest way to backup a database is to dump the values into an object and store it on another machine. Using ```pg_dump```, you can specify the object type, if to compress it and whether to parallellize the dump.
-
-[pg_dump](https://www.postgresql.org/docs/current/static/app-pgdump.html)
+The easiest way to backup a database is to dump the values into an object and store it on another machine. Using [pg_dump](https://www.postgresql.org/docs/current/static/app-pgdump.html), you can specify the object type, if it should be compressed, and whether to parallellize the dump.
 
 ### Custom format dump with good compression
 
@@ -67,7 +65,7 @@ ssh -o "Compression=no" db.domain.com "pg_dump -Z9 -Fc -U postgres mydb" > mydb.
 ```
 
 
-# Dump Miscellaneous Database Values
+# Dump Global Database Objects
 
 Along with dumping the actual database values, it is important to also dump the database global objects, including the roles and tablespaces. This is done via the ```pg_dumpall -g``` command (the ```-g``` variable dumps global objects only).
 
@@ -80,15 +78,39 @@ Backing up the pySecMaster global objects:
 ```
 
 
-# Restore the Dump
+# Restore the Database
 
 Backing up databases is not only about dumping database data. The database dump must be able to be quickly and accurately restored. It is essential to test the database dump to ensure that in a crisis, you can get your database up and running as quickly as possible.
 
-In Postgres, ```pg_restore``` allows for loading the previously dumped data into a fresh database structure. However, ```pg_restore``` starts to fail with databases over 1TB because it can take far too long to restore the data dump. If this is the case, then it is pertinent to use a replicated database system to prevent having to restore massive databases from scratch.
+To restore the database from scratch, first load the global objects (users, groups, tablespaces, etc.) into the new server, create the database object, and then restore the actual database values. 
 
-[pg_restore](https://www.postgresql.org/docs/current/static/app-pgrestore.html)
+### Restore Global Objects
 
-#### Important Flags
+Change the user to postgres, open the psql command interface and load the stored global objects.
+```bash
+su postgres
+psql - U postgres -h localhost -p 5432 < <global object dump>
+```
+
+### Create the Database Object
+
+Simply create the an empty database with the same name as the database being restored
+```bash
+su postgres
+psql CREATE DATABASE database_name OWNER database_owner_name
+```
+
+### Restore Database Values
+
+In Postgres, [pg_restore](https://www.postgresql.org/docs/current/static/app-pgrestore.html) allows for loading the previously dumped data into a fresh database structure. However, ```pg_restore``` starts to fail with databases over 1TB because it can take far too long to restore the data dump. If this is the case, then it is pertinent to use a replicated database system to prevent having to restore massive databases from scratch.
+
+Use pg_restore to rebuild the database with the values stored in the dump file
+```bash
+su postgres
+pg_restore -d database_name -1 mydb.dump
+```
+
+##### Important Flags
 
 ```-1``` flag does a full restore as a single transaction. With this flag, the database will only be restored if the entire restore was successful. Meaning you won't be left with a corrupt or missing database structure. 
 
