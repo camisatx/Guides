@@ -9,6 +9,12 @@ For advanced git functionality, read [A Hacker's Guide to Git] (http://wildlyina
 
 # Basic Git Operations
 
+Clone a git repository (the pySecMaster) from GitHub to the current folder
+
+```bash
+git clone https://github.com/camisatx/pySecMaster.git
+```
+
 Initialize a git repository in the current folder
 
 ```bash

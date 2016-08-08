@@ -385,6 +385,12 @@ Retype new UNIX password:
 passwd: password updated successfully
 ```
 
+Change the password of the postgres user within PostgreSQL
+```bash
+su postgres
+psql ALTER USER postgres PASSWORD 'new_password';
+```
+
 ### Connect to Postgres Server
 
 Change to the postgres user and start the psql shell
