@@ -350,9 +350,9 @@ Make sure that LMD finds the ClamAV binary files. Look for this in the output fr
 
 ### Install the latest PostgreSQL
 
-Add the official PostgreSQL repository
+Add the official PostgreSQL repository for the long-term stable release
 ```bash
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d.pgdg.list'
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
 ```
 
 Import the GPG key of the repository so that apt can check the validity of the package
@@ -388,7 +388,8 @@ passwd: password updated successfully
 Change the password of the postgres user within PostgreSQL
 ```bash
 su postgres
-psql ALTER USER postgres PASSWORD 'new_password';
+psql
+ALTER USER postgres PASSWORD 'new_password';
 ```
 
 ### Connect to Postgres Server

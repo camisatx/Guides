@@ -89,7 +89,7 @@ To restore the database from scratch, first load the global objects (users, grou
 Change the user to postgres, open the psql command interface and load the stored global objects.
 ```bash
 su postgres
-psql - U postgres -h localhost -p 5432 < <global object dump>
+psql -U postgres -h localhost -p 5432 < <global object dump>
 ```
 
 ### Create the Database Object
