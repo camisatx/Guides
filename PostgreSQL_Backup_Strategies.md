@@ -4,8 +4,8 @@ This file contains some strategies for backing up and restoring a PostgreSQL dat
 
 Contents:
 - [Dump Specified Database](#dump-specified-database)
-- [Dump Miscellaneous Database Values](#dump-miscellaneous-database-values)
-- [Restore Database Dump](#restore-the-dump)
+- [Dump Global Database Objects](#dump-global-database-objects)
+- [Restore Database Database](#restore-the-database)
 - [Sources](#sources)
 
 Postgres database backups involve two main activities, dumping the data and restoring the data.
