@@ -1,17 +1,19 @@
 #!/bin/bash
 
 echo "Starting the new server setup script"
+cd ~
 
 # Update the system
 sudo apt-get update && sudo apt-get upgrade -y
 
 
+echo ""
 echo "Installing unattended-upgrades..."
 # Install and setup unattended-upgrades
 sudo apt-get install unattended-upgrades -y
 
 # Edit the 50unattended-upgrade file
-sudo cat >/etc/apt/apt.conf.d/50unattended-upgrade <<EOL
+sudo cat >/etc/apt/apt.conf.d/50unattended-upgrades <<EOL
 // Automatically upgrade packages from these (origin:archive) pairs
 Unattended-Upgrade::Allowed-Origins {
         "${distro_id}:${distro_codename}-security";
@@ -84,33 +86,79 @@ EOL
 /etc/init.d/unattended-upgrades restart
 
 
-echo "Enabling ufw firewall..."
-# Enable and set the ufw firewall for ssh, http and https
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow ssh
-sudo ufw allow 80
-sudo ufw allow 443
-sudo ufw --force enable
-
-
-echo "Disabling password based login..."
-# Disable root and password based login
-perl -pi -e 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
-#perl -pi -e 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-sudo service ssh restart
-
-
+echo ""
 echo "Installing fail2ban for SSHD..."
 # Install and setup fail2ban for SSHD
 sudo apt-get install fail2ban -y
-
 # Copy the default jail.conf file to a new file called jail.local
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-
+# Change the ban time from 600 seconds (10 min) to 86,400 seconds (1 day) :)
+perl -pi -e 's/bantime  = 600/bantime  = 86400/g' /etc/fail2ban/jail.local
+# Change the find time from 600 seconds (10 min) to 3,600 seconds (1 hour)
+perl -pi -e 's/findtime  = 600/findtime  = 3600/g' /etc/fail2ban/jail.local
 sudo service fail2ban restart
 
 
+echo ""
+echo "Enabling ufw firewall, only allowing ssh (port 22)..."
+# Enable and set the ufw firewall for ssh
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh
+sudo ufw --force enable
+
+
+# Create a new system user with sudo access
+echo ""
+read -e -p "Enter the username you want to use: " new_username
+grep "^$new_username" /etc/passwd > /dev/null
+if [ $? -eq 0 ]; then
+    echo "$new_username already exists"
+    echo "The user was not changed"
+else
+    # Create the new user account
+    sudo adduser $new_username
+    # The user will be prompted to enter their password
+    # Enable the user to have sudo access
+    sudo usermod -aG sudo $new_username
+fi
+
+
+echo ""
+echo "Disabling root based login..."
+# Before disabling root login, ensure a non root user exist
+perl -pi -e 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+sudo service ssh restart
+
+
+echo ""
+echo "Do you already have an SSH key pair linked to the main user account on this server?"
+select yn in "Yes" "No"
+do
+    case $yn in
+        Yes )
+            echo "Disabling password based login..."
+            perl -pi -e 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+            sudo service ssh restart
+            break
+            ;;
+        No )
+            echo "Password based login is still enabled."
+            echo ""
+            echo "Add an ssh key pair for your user. View this link for help adding a ssh key:"
+            echo "https://github.com/camisatx/Guides/blob/master/Ubuntu_Commands.md#ssh-key"
+            echo ""
+            echo "Once complete, disable password based login by running the following two lines:"
+            echo "perl -pi -e 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config"
+            echo "sudo service ssh restart"
+            echo ""
+            break
+            ;;
+     esac
+done
+
+
+echo ""
 echo "Installing Maldet..."
 # Download and install Maldet (LMD)
 cd /usr/local/src/
@@ -118,28 +166,28 @@ sudo wget http://www.rfxn.com/downloads/maldetect-current.tar.gz
 sudo tar -xzf maldetect-current.tar.gz
 cd maldetect-*
 sudo sh ./install.sh
-sudo cd ..
+cd ..
+# Delete original download zip files
 sudo rm -rf maldetect-current.tar.gz
 sudo rm -rf maldetect-*
+cd ~
 
 # Enable the LMD quarantine by replacing these 0's with 1's
 perl -pi -e 's/quarantine_hits="0"/quarantine_hits="1"/g' /usr/local/maldetect/conf.maldet
 perl -pi -e 's/quarantine_clean="0"/quarantine_clean="1"/g' /usr/local/maldetect/conf.maldet
 
 
+echo ""
 echo "Installing ClamAV..."
 # Install ClamAV
 sudo apt-get install clamtk clamav -y
 
+echo ""
+echo "Testing Maldet with ClamAV..."
 sudo maldet -d
 sudo maldet -u
 
 
 echo ""
 echo "Finished setting up the server"
-echo "Now create a user for yourself, along with copying over your SSH key"
-echo "Once you do this, disable root login by running this command:
-echo ""'perl -pi -e 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config'"
-echo "and then running: 'sudo service ssh restart'"
-echo ""
 echo "Have fun!"
