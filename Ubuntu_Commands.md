@@ -117,10 +117,7 @@ sudo adduser <new user name>
 Enable a user to have sudo access
 
 ```bash
-sudo nano /etc/sudoers.d/<new user name>
-#
-# Within this file, enter the following line and save it
-<new user name> ALL=(ALL) NOPASSWD:ALL
+sudo usermod -aG sudo <new user name>
 ```
 
 Add a [SSH key](#ssh-key) for this new user (especially pertinent if system access via only passwords are disabled).
@@ -191,7 +188,7 @@ ssh-keygen -t ed25519
 
 ##### [Simple method] (https://wiki.archlinux.org/index.php/SSH_keys)
 
-Copies the specified SSH public key to the ~/.ssh/authorized_keys file on the remote server.
+Copies the specified SSH public key to the ~/.ssh/authorized_keys file on the remote server. **Run this before disabling password authentication (login).**
 
 ```bash
 ssh-copy-id -i ~/.ssh/id_ed25519.pub <user>@<ip address>
@@ -276,10 +273,16 @@ Open the new file:
 sudo nano /etc/fail2ban/jail.local
 ```
 
-Increase the ban time to a full day (seconds):
+Within the `jail.local` file, increase the ban time from 600 seconds to 86,400 seconds (1 day):
 
 ```bash
 bantime = 86400
+```
+
+Also within the `jail.local` file, increase the find time from 600 seconds to 3,600 seconds (1 hour):
+
+```bash
+findtime = 3600
 ```
 
 #### Restart Fail2Ban
