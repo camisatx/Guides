@@ -108,56 +108,6 @@ sudo ufw allow ssh
 sudo ufw --force enable
 
 
-# Create a new system user with sudo access
-echo ""
-read -e -p "Enter the username you want to use: " new_username
-grep "^$new_username" /etc/passwd > /dev/null
-if [ $? -eq 0 ]; then
-    echo "$new_username already exists"
-    echo "The user was not changed"
-else
-    # Create the new user account
-    sudo adduser $new_username
-    # The user will be prompted to enter their password
-    # Enable the user to have sudo access
-    sudo usermod -aG sudo $new_username
-fi
-
-
-echo ""
-echo "Disabling root based login..."
-# Before disabling root login, ensure a non root user exist
-perl -pi -e 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-sudo service ssh restart
-
-
-echo ""
-echo "Do you already have an SSH key pair linked to the main user account on this server?"
-select yn in "Yes" "No"
-do
-    case $yn in
-        Yes )
-            echo "Disabling password based login..."
-            perl -pi -e 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
-            sudo service ssh restart
-            break
-            ;;
-        No )
-            echo "Password based login is still enabled."
-            echo ""
-            echo "Add an ssh key pair for your user. View this link for help adding a ssh key:"
-            echo "https://github.com/camisatx/Guides/blob/master/Ubuntu_Commands.md#ssh-key"
-            echo ""
-            echo "Once complete, disable password based login by running the following two lines:"
-            echo "perl -pi -e 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config"
-            echo "sudo service ssh restart"
-            echo ""
-            break
-            ;;
-     esac
-done
-
-
 echo ""
 echo "Installing Maldet..."
 # Download and install Maldet (LMD)
@@ -186,6 +136,74 @@ echo ""
 echo "Testing Maldet with ClamAV..."
 sudo maldet -d
 sudo maldet -u
+
+
+# Create a new system user with sudo access
+echo ""
+echo "Do you want to create a new user with sudo access?"
+select u_yn in "Yes" "No"
+do
+    case $u_yn in
+        Yes )
+            read -e -p "Enter the username you want to use: " new_username
+            grep "^$new_username" /etc/passwd > /dev/null
+            if [ $? -eq 0 ]; then
+                echo "$new_username already exists"
+                echo "The user was not changed. Try another username..."
+            else
+                # Create the new user account
+                sudo adduser $new_username
+                # The user will be prompted to enter their password
+                # Enable the user to have sudo access
+                sudo usermod -aG sudo $new_username
+                echo "Successfully created $new_username as a sudo user"
+                break
+            fi
+            ;;
+        No )
+            echo "No user will be created."
+            echo "Make sure you are not relying only on the root user, as that is a security issue!"
+            echo "It is a good idea to create a not root system user when administering this server."
+            echo "Run these commands to create a new user and to give them sudo access:"
+            echo "sudo adduser <new username>"
+            echo "sudo usermod -aG sudo <new username>"
+            break
+            ;;
+    esac
+done
+
+echo ""
+echo "Disabling root based login..."
+# Before disabling root login, ensure a non root user exist
+perl -pi -e 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+sudo service ssh restart
+
+
+echo ""
+echo "Do you already have an SSH key pair linked to the main user account on this server?"
+select k_yn in "Yes" "No"
+do
+    case $k_yn in
+        Yes )
+            echo "Disabling password based login..."
+            perl -pi -e 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+            sudo service ssh restart
+            break
+            ;;
+        No )
+            echo "Password based login is still enabled."
+            echo ""
+            echo "Add an ssh key pair for your user. View this link for help adding a ssh key:"
+            echo "https://github.com/camisatx/Guides/blob/master/Ubuntu_Commands.md#ssh-key"
+            echo ""
+            echo "Once complete, disable password based login by running the following two lines:"
+            echo "perl -pi -e 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config"
+            echo "sudo service ssh restart"
+            echo ""
+            break
+            ;;
+    esac
+done
 
 
 echo ""
