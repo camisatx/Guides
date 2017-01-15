@@ -1,0 +1,16 @@
+version: '2.1'
+
+services:
+  openvpn:
+    image: kylemanna/openvpn
+    volumes:
+      - ovpn_data:/etc/openvpn
+    ports:
+      - "1194:1194/udp"
+    restart: always
+    cap_add:
+      - NET_ADMIN
+
+volumes:
+  ovpn_data:
+    external: false
