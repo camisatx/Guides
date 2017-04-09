@@ -17,8 +17,6 @@ set wrap	    	"Wrap long lines
 
 set colorcolumn=80	"Notate if line is over 80 characters
 
-filetype plugin indent on   "Enable filetype detection
-
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden		"Manage multiple buffers effectively
 
@@ -28,19 +26,27 @@ set nobackup
 set nowb
 
 " ============================= Indentation ==================================
-set autoindent
-set smartindent
-set smarttab
-"set shiftwidth=2
-"set softtabstop=2
-"set tabstop=4
-"set expandtab
+filetype plugin indent on   "Enable filetype detection
+"set autoindent
+"set smartindent
+"set smarttab
+set shiftwidth=4	"Make indentations match to the 4 spaces of tab
+"set softtabstop=4
+set tabstop=4		"Change the maximum width of tab to 4 spaces width
+set expandtab		"On pressing tab, insert 4 spaces
 set pastetoggle=<F3>    "Toggle paste mode with F3; turns off autoindent, etc.
   
 " ============================== Scrolling ===================================
 set scrolloff=8         "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
+
+" ============================ Spell Check ===================================
+"set spell spelllang=en_us
+"set spellfile=~/Programming/Code/Guides/scripts/vim_spelling.en.utf-8.add
+" Only enable spell check in markdown files and git commit messages
+autocmd BufRead,BufNewFile *.md set spell spelllang=en_us
+autocmd FileType gitcommit set spell spelllang=en_us
 
 " ============================================================================
 " ======================== Install 3rd Party Plugins =========================
@@ -51,8 +57,14 @@ Plug 'scrooloose/nerdtree'
 " Commands
 Plug 'tpope/vim-surround'
 
-" Completion
-Plug 'valloric/youcompleteme', {'do': './install.py'}
+" ============================== YouCompleteMe ================================
+" Run to install:
+"   sudo apt update && sudo apt install build-essential cmake
+"   ~/.vim/plugged/youcompleteme ./install.py --all
+Plug 'valloric/youcompleteme'
+
+" Must use the system python package when installing youcompleteme
+let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 
 " =========================== Syntastic settings =============================
 Plug 'scrooloose/syntastic'     "Syntax checker
@@ -65,6 +77,9 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Use flake8 if it is installed, otherwise fall back to pyflakes
+let g:syntastic_python_checkers = ['flake8', 'pyflakes']
 
 " ============================== Git =========================================
 
