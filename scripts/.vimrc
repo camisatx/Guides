@@ -30,10 +30,10 @@ filetype plugin indent on   "Enable filetype detection
 "set autoindent
 "set smartindent
 "set smarttab
-set shiftwidth=4	"Make indentations match to the 4 spaces of tab
+set shiftwidth=4	    "Make indentations match to the 4 spaces of tab
 "set softtabstop=4
-set tabstop=4		"Change the maximum width of tab to 4 spaces width
-set expandtab		"On pressing tab, insert 4 spaces
+set tabstop=4		    "Change the maximum width of tab to 4 spaces width
+set expandtab		    "On pressing tab, insert 4 spaces
 set pastetoggle=<F3>    "Toggle paste mode with F3; turns off autoindent, etc.
   
 " ============================== Scrolling ===================================
@@ -54,13 +54,17 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
 
-" Commands
-Plug 'tpope/vim-surround'
+" ========================= Surrounding Characters ===========================
+
+Plug 'raimondi/delimitmate'		"Automatic closing characters
+
+Plug 'tpope/vim-surround'       "Change surrounding characters easily
 
 " ============================== YouCompleteMe ================================
 " Run to install:
-"   sudo apt update && sudo apt install build-essential cmake
-"   ~/.vim/plugged/youcompleteme ./install.py --all
+"   sudo apt update && sudo apt install build-essential cmake python-dev
+"       python3-dev
+"   ~/.vim/plugged/youcompleteme/install.py --clang-completer
 Plug 'valloric/youcompleteme'
 
 " Must use the system python package when installing youcompleteme
