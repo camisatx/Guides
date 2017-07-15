@@ -6,6 +6,9 @@ These commands are useful when editing images within the Ubuntu command line int
 
 [ImageMagick](https://www.imagemagick.org/script/command-line-processing.php) is a very powerful tool for manipulating images via the command line.
 
+To install ImageMagick, use:
+`sudo apt install imagemagick`
+
 ### Image Resize
 
 Modern day cameras take very high resolution images, however, most websites don't need images with resolutions that high. Thus, it is possible to resize the images to save bandwidth requirements when a user loads an image.
