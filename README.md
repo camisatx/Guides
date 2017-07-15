@@ -9,6 +9,7 @@ Contents:
 - [PostgreSQL Backup Strategies](../master/PostgreSQL_Backup_Strategies.md)
 - [Ubuntu Server Commands](../master/Ubuntu_Commands.md)
   - [Server Setup Script](../master/scripts/new_server_setup)
+- [Image Processing Commands](../master/Image_Processing.md)
 
 
 If you have any guides that you'd like to share, please raise an issue with the contents or submit a merge request with your guide.
