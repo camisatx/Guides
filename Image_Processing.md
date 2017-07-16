@@ -1,14 +1,14 @@
-# Image Processing in Ubuntu Command Line Interface
+# Image Processing in Commands
 
-These commands are useful when editing images within the Ubuntu command line interface. They are very good at editing a single image or thousands of images in one go.
+These commands are useful when editing images within the Ubuntu command line interface. The commands work with a single image or thousands of images.
 
 ### Contents
 
 - [Image Manipulations](#image-manipulations)
     - [Compression](#compression)
     - [Resize](#resize)
-    - [Prepare Images for the Web](#prepare-images-for-the-web)
 - [Image Metadata](#image-metadata)
+- [Prepare Images for the Web](#prepare-images-for-the-web)
 
 ## Image Manipulations
 
@@ -46,37 +46,21 @@ You can also resize an image to a specific resolution using a command like:
 convert -resize 1920x1080 source.jpg destination.jpg
 ```
 
+Or by a specific resolution width-wise with:
+
+```bash
+convert -resize 1024x source.jpg destination.jpg
+```
+
 If you want to overwrite the original image when you resize the image, use `mogrify` instead of `convert` like:
 
 ```bash
 mogrify -resize 50% *.jpg
 ```
 
-All of these commands keep the image's aspect ratio. To not keep the aspect ratio, add an exclamation point (`!`) after the resize ratio.
+All of these commands keep the image's aspect ratio. If you do not want to keep the aspect ratio, add an exclamation point (`!`) after the resize ratio.
 
 View more of ImageMagick's image resizing options [here](https://www.imagemagick.org/Usage/resize/).
-
-### Prepare Images for the Web
-
-Images on websites should have as much quality as possible while minimizing size. This is possible by resizing and compressing the image.
-
-You can resize and compress an image with one command:
-
-```bash
-convert -resize 1024x -quality 30% source.JPG source-1024-30p.JPG
-```
-
-As mentioned in this great [answer](https://askubuntu.com/a/781588) on Ask Ubuntu by Geppettvs D'Constanzo, you can batch resize and compress all jpg images in a folder by using this command:
-
-```bash
-for i in *.jpg; do convert $i -resize 1024x -quality 30% %i-1024x-30p.jpg; done;
-```
-
-If you want to overwrite the original images when resizing and compressing them, run this command:
-
-```bash
-mogrify -resize 1024x -quality 30% *.JPG
-```
 
 ## Image Metadata
 
@@ -100,18 +84,46 @@ To remove an image's EXIF metadata, use:
 exiftool -all= image.jpg
 ```
 
-This command technically does not remove all metadata objects, but the items left are benign so it's okay.
-
-This command also creates a backup of the original image that includes all of the prior metadata. To prevent this backup image from being created (essentially, overwriting the original image), use:
+Remove all EXIF metadata will also remove the orientation of the image, so to keep that information, use this command:
 
 ```bash
-exiftool -overwrite_origininal -all= image.jpg
+exiftool -all= -tagsfromfile @ -Orientation image.jpg
+```
+
+These commands do not technically remove all metadata objects, but the items remaining are benign so it's okay.
+
+These commands also create a backup of the original image, which includes all of the prior metadata. To prevent this backup image from being created (essentially, overwriting the original image), use:
+
+```bash
+exiftool -overwrite_original -all= -tagsfromfile @ -Orientation image.jpg
 ```
 
 If you want to remove the metadata for all images in a directory, you can use the file wild-card when providing data on which image to edit:
 
 ```bash
-exiftool -overwrite_original -all= *.jpg
+exiftool -overwrite_original -all= -tagsfromfile @ -Orientation *.jpg
 ```
 
 View the exiftool documentation [here](http://www.sno.phy.queensu.ca/~phil/exiftool/exiftool_pod.html).
+
+## Prepare Images for the Web
+
+Images on websites should have as much quality as possible while minimizing size. This is possible by resizing and compressing the image.
+
+You can resize and compress an image with one command:
+
+```bash
+convert -resize 1024x -quality 30% source.JPG source-1024-30p.JPG
+```
+
+As mentioned in this great [answer](https://askubuntu.com/a/781588) on Ask Ubuntu by Geppettvs D'Constanzo, you can batch resize and compress all jpg images in a folder by using this command:
+
+```bash
+for i in *.jpg; do convert $i -resize 1024x -quality 30% %i-1024x-30p.jpg; done;
+```
+
+If you want to overwrite the original images when resizing and compressing them, run this command:
+
+```bash
+mogrify -resize 1024x -quality 30% *.JPG
+```
