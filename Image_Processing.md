@@ -1,4 +1,4 @@
-# Image Processing in Commands
+# Image Processing Ubuntu Commands
 
 These commands are useful when editing images within the Ubuntu command line interface. The commands work with a single image or thousands of images.
 
