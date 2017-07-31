@@ -26,7 +26,7 @@ set nofoldenable
 "Enable the clipboard use for copy and paste
 "Run 'sudo apt install vim-gnome' to add clipboard to vim
 "Check if vim clipboard is activated with 'vim --version'
-"Use ':*y' to copy selected to clipboard and ':*p' to paste from clipboard
+"Use '"*y' to copy selected to clipboard and '"*p' to paste from clipboard
 set clipboard=unnamedplus
 
 " ========================= Turn Off Swap Files ==============================
