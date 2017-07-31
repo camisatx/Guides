@@ -20,6 +20,15 @@ set colorcolumn=80	"Notate if line is over 80 characters
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden		"Manage multiple buffers effectively
 
+set foldmethod=indent
+set nofoldenable
+
+"Enable the clipboard use for copy and paste
+"Run 'sudo apt install vim-gnome' to add clipboard to vim
+"Check if vim clipboard is activated with 'vim --version'
+"Use ':*y' to copy selected to clipboard and ':*p' to paste from clipboard
+set clipboard=unnamedplus
+
 " ========================= Turn Off Swap Files ==============================
 set noswapfile
 set nobackup
@@ -45,7 +54,7 @@ set sidescroll=1
 "set spell spelllang=en_us
 "set spellfile=~/Programming/Code/Guides/scripts/vim_spelling.en.utf-8.add
 " Only enable spell check in markdown files and git commit messages
-autocmd BufRead,BufNewFile *.md set spell spelllang=en_us
+autocmd BufRead,BufNewFile *.md,*.html set spell spelllang=en_us
 autocmd FileType gitcommit set spell spelllang=en_us
 
 " ============================================================================
