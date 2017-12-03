@@ -201,6 +201,7 @@ do
             echo "Password based login MAY be enabled."
             echo ""
             echo "Add an ssh key pair for your user. View this link for help adding a ssh key:"
+            echo "ssh-copy-id -i ~/.ssh/id_ed25519.pub <user>@<ip address>"
             echo "https://github.com/camisatx/Guides/blob/master/Ubuntu_Commands.md#ssh-key"
             echo ""
             echo "Once complete, disable password based login by running the following two lines:"
