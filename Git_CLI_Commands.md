@@ -4,7 +4,7 @@ This file covers many of the common commands used with Git. Since Git is not pla
 
 The purpose of this file is to help make using Git via command line less intimidating. There will always be a place for SourceTree and VCS within PyCharm, but using Git with the command line has very high efficiency for certain tasks.
 
-For advanced git functionality, read [A Hacker's Guide to Git] (http://wildlyinaccurate.com/a-hackers-guide-to-git/).
+For advanced git functionality, read [A Hacker's Guide to Git](http://wildlyinaccurate.com/a-hackers-guide-to-git/).
 
 
 # Basic Git Operations
@@ -206,7 +206,7 @@ git log
 
 Merge a repo into the subdirectory of another repo while maintaining the file histories (mostly).
 
-Structure follows Flimm's answer [here] (https://stackoverflow.com/questions/13040958/merge-two-git-repositories-without-breaking-file-history).
+Structure follows Flimm's answer [here](https://stackoverflow.com/questions/13040958/merge-two-git-repositories-without-breaking-file-history).
 
 ```bash
 # Add the second repo as a remote of the main repo
