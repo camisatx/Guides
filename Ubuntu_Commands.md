@@ -2,7 +2,7 @@
 
 This file includes a myriad of Ubuntu commands. Hopefully you can pick up one or two commands you never knew about previously.
 
- Contents:
+### Contents:
  - [Connect to a VPS via SSH](#connect-to-a-vps-via-ssh)
  - [System Updates](#system-updates)
     - [Automate System Updates](#automate-system-updates)
@@ -14,8 +14,12 @@ This file includes a myriad of Ubuntu commands. Hopefully you can pick up one or
     - [Disable root and password based login](#disable-root-and-password-based-login)
     - [Fail2Ban](#fail2ban)
     - [Maldet (LMD) with ClamAV](#maldet-lmd-with-clamav)
- - [PostgreSQL](#postgresql)
- - [Monitor Sensor Temperatures](#monitor-sensor-temperatures)
+ - [Storage](#storage)
+    - [SSHFS](#sshfs)
+ - [System Monitoring](#system-monitoring)
+    - [Monitor Sensor Temperatures](#monitor-sensor-temperatures)
+ - [Databases](#databases)
+    - [PostgreSQL](#postgresql)
 
 I made a [bash script](../master/scripts/new_server_setup) with many of these commands included. This is useful for securing new servers you spin up. Let me know if you think there is anything that should be added to this.
 
@@ -349,7 +353,77 @@ Make sure that LMD finds the ClamAV binary files. Look for this in the output fr
 > maldet(####): {scan} found clamav binary at /usr/bin/clamscan, using clamav scanner engine...
 
 
-# PostgreSQL
+# Storage
+
+## SSHFS
+
+SSHFS is a filesystem client to mount and interact with directories and files located on a remote server over a normal ssh connection.
+
+This means that you can use a secure SSH connection to mount a storage device located on a remote computer onto your local machine. That's pretty awesome!
+
+To install sshfs, run:
+
+```bash
+sudo apt install sshfs
+```
+
+### Mount the Remote Directory
+
+Before mounting the remote directory, create a new folder where you want to mount the folder to.
+
+```bash
+mkdir remote_drive
+```
+
+Then you can mount the remote directory to this local folder.
+
+```bash
+sshfs ubuntu@192.168.0.1:/home/ubuntu/movies ~/remote_drive
+```
+
+### Unmount the Remote Directory
+
+When you are finished using the remote directory, you can unmount the remote folder.
+
+```bash
+fusermount -u ~/remote_drive
+```
+
+[Source](https://www.digitalocean.com/community/tutorials/how-to-use-sshfs-to-mount-remote-file-systems-over-ssh)
+
+
+# System Monitoring
+
+## Monitor Sensor Temperatures
+
+Install the sensor packages
+
+```bash
+sudo apt-get install lm-sensors sensors-applet
+```
+
+Detects all the sensors in the system
+
+```bash
+sudo sensors-detect
+```
+
+View the current temperatures
+
+```bash
+sensors
+```
+
+Display sensor temperatures every second, highlighting differences
+
+```bash
+watch -n 1 -d sensors
+```
+
+
+# Databases
+
+## PostgreSQL
 
 ### Install the latest PostgreSQL
 
@@ -467,31 +541,4 @@ Grant all privileges on the current database to the new user for all tables. If 
 ```sql
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO <new user>;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to <new user>;
-```
-
-
-# Monitor Sensor Temperatures
-
-Install the sensor packages
-
-```bash
-sudo apt-get install lm-sensors sensors-applet
-```
-
-Detects all the sensors in the system
-
-```bash
-sudo sensors-detect
-```
-
-View the current temperatures
-
-```bash
-sensors
-```
-
-Display sensor temperatures every second, highlighting differences
-
-```bash
-watch -n 1 -d sensors
 ```
