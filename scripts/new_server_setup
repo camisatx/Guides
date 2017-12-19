@@ -89,52 +89,55 @@ do
     case $d_yn in
         Yes )
             echo "Installing Docker CE from the official Docker repository..."
-            sudo apt-get update
+            sudo apt update
 
             # Install the prerequisites
-            sudo apt-get install curl \
+            sudo apt install curl \
                 linux-image-extra-$(uname -r) \
                 linux-image-extra-virtual -y
 
             # Setup the repository
-            sudo apt-get install \
+            sudo apt install \
                 apt-transport-https \
                 ca-certificates \
+                curl \
                 software-properties-common -y
             curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
             apt-key fingerprint 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
             sudo add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
             # Install the Docker engine
-            sudo apt-get update
+            sudo apt update
             echo "Do you want to install the latest version of Docker?"
             select dv_yn in "Yes" "No"
             do
                 case $dv_yn in
                     Yes )
-                        sudo apt-get install docker-ce -y
+                        sudo apt install docker-ce -y
                         break
                         ;;
                     No )
                         apt-cache madison docker-ce
                         read -e -p "Which Docker CE version should be installed?" docker_version
-                        sudo apt-get install docker-ce=$docker_version -y
+                        sudo apt install docker-ce=$docker_version -y
                         break
                         ;;
                 esac
             done
 
             # Install Docker Compose
-            curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-            # If a 'Permission denied' error occurs, run `sudo -i` before trying it again, then type `exit` to leave superuser account
-            chmod +x /usr/local/bin/docker-compose
+            sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+
+            # Add the docker group and add this user to the group
+            sudo groupadd docker
+            sudo usermod -aG docker $USER
 
             echo ""
             echo "Finished installing Docker CE. You can test it by running:"
             echo "sudo docker run hello-world"
             echo ""
-            echo "To allow Docker commands to be run without sudo, add your user to the docker group with:"
-            echo "sudo usermod -aG docker <username>"
+            echo "Re-log into this computer to allow Docker commands to be run without sudo"
             echo ""
             break
             ;;
