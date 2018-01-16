@@ -3,19 +3,21 @@
 ## Software
 
 ### Ubuntu Store
-Caffeine
-System Load Indicator
+
+- Caffeine
+- System Load Indicator
 
 ### Online
-Calibre (book manager - optional)
-Chrome
-Dropbox
-GIMP (photo editing - optional)
-Kdenlive (video editing - optional)
-Sinal
-Steam
-Veracrypt
-VMware
+
+- Calibre (book manager - optional)
+- Chrome
+- Dropbox
+- GIMP (photo editing - optional)
+- Kdenlive (video editing - optional)
+- Sinal
+- Steam
+- Veracrypt
+- VMware
 
 ## SMB
 
@@ -33,33 +35,33 @@ Edit the /etc/fstab file to include:
 ## Terminal
 
 ### Font
-Meslo LG S for Powerline Regular
-8 pt
+- Meslo LG S for Powerline Regular
+- 8 pt
 
 ### Colors
 
-Black 1: #2D3C46
-Black 2: #425059
-Red 1: #A54242
-Red 2: #CC6666
-Green 1: #8C9440
-Green 2: #B5BD68
-Yellow 1: #C4A000
-Yellow 2: #FCE94F
-Blue 1: #3465A4
-Blue 2: #729FCF
-Purple 1: #75507B
-Purple 2: #AD7FA8
-Teal 1: #06989A
-Teal 2: #34E2E2
-White 1: #D3D7CF
-White 2: #EEEEEC
+- Black 1: #2D3C46
+- Black 2: #425059
+- Red 1: #A54242
+- Red 2: #CC6666
+- Green 1: #8C9440
+- Green 2: #B5BD68
+- Yellow 1: #C4A000
+- Yellow 2: #FCE94F
+- Blue 1: #3465A4
+- Blue 2: #729FCF
+- Purple 1: #75507B
+- Purple 2: #AD7FA8
+- Teal 1: #06989A
+- Teal 2: #34E2E2
+- White 1: #D3D7CF
+- White 2: #EEEEEC
 
 ### Plugins
 
-git
-tmux
-vim
+- git
+- tmux
+- vim
 
 ### Paths
 
@@ -83,4 +85,4 @@ export PATH="/home/josh/Programming/Python/Anaconda3_5/bin:$PATH"
 
 ## VPN
 
-Copy the hidden manger file from the home folder to the /media/<user>/ file, ensuring that all ownership remains to the user. Then create a sym link from this new location back to the original home folder location.
+Copy the hidden manger file from the home folder to the `/media/<user>/` file, ensuring that all ownership remains to the user. Then create a sym link from this new location back to the original home folder location.
