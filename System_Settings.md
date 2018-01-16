@@ -1,8 +1,34 @@
 # System Settings
 
+## Software
+
+### Ubuntu Store
+Caffeine
+System Load Indicator
+
+### Online
+Calibre (book manager - optional)
+Chrome
+Dropbox
+GIMP (photo editing - optional)
+Kdenlive (video editing - optional)
+Sinal
+Steam
+Veracrypt
+VMware
+
 ## SMB
 
-Create a .smbcredentials file with 600 permission. On the first line, include the SMB username and the password on the second line.
+Create a .smbcredentials file with 600 permission. Include the following:
+```bash
+<Samba user name>
+<Samba user password>
+```
+
+Edit the /etc/fstab file to include:
+```bash
+//192.168.0.##/<folder> /mnt/<folder> cifs noperm,credentials=/home/<user>/.smbcredentials,iocharset=utf8,sec=ntlm,gid=1000,uid=1000,file_mode=0777,dir_mode=0777 0 0
+```
 
 ## Terminal
 
@@ -31,8 +57,9 @@ White 2: #EEEEEC
 
 ### Plugins
 
-Vim
-
+git
+tmux
+vim
 
 ### Paths
 
