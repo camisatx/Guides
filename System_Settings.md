@@ -12,12 +12,13 @@
 - Calibre (book manager - optional)
 - Chrome
 - Dropbox
+- Foxit
 - GIMP (photo editing - optional)
 - Kdenlive (video editing - optional)
-- Sinal
+- Signal
 - Steam
 - Veracrypt
-- VMware
+- VMware Player
 
 ## SMB
 
@@ -29,14 +30,15 @@ Create a .smbcredentials file with 600 permission. Include the following:
 
 Edit the /etc/fstab file to include:
 ```bash
-//192.168.0.##/<folder> /mnt/<folder> cifs noperm,credentials=/home/<user>/.smbcredentials,iocharset=utf8,sec=ntlm,gid=1000,uid=1000,file_mode=0777,dir_mode=0777 0 0
+//192.168.0.##/<folder> /mnt/<folder> cifs noperm,credentials=/home/<user>/.smbcredentials,iocharset=utf8,gid=1000,uid=1000,file_mode=0777,dir_mode=0777 0 0
 ```
 
 ## Terminal
 
-### Font
-- Meslo LG S for Powerline Regular
-- 8 pt
+### Background
+
+- Background: #1D1D1D
+- Text: #FFFFFF
 
 ### Colors
 
@@ -57,10 +59,15 @@ Edit the /etc/fstab file to include:
 - White 1: #D3D7CF
 - White 2: #EEEEEC
 
+### Font
+- Meslo LG S for Powerline Regular
+- 8 pt
+
 ### Plugins
 
 - git
 - tmux
+- tmux resurrect
 - vim
 
 ### Paths
