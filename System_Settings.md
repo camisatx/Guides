@@ -22,6 +22,11 @@
 
 ## SMB
 
+Install cifs:
+```bash
+sudo apt update; sudo apt install cifs-utils
+```
+
 Create a .smbcredentials file with 600 permission. Include the following:
 ```bash
 <Samba user name>
