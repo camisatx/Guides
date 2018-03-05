@@ -53,8 +53,8 @@ set sidescroll=1
 " ============================ Spell Check ===================================
 "set spell spelllang=en_us
 "set spellfile=~/Programming/Code/Guides/scripts/vim_spelling.en.utf-8.add
-" Only enable spell check in markdown files and git commit messages
-autocmd BufRead,BufNewFile *.md,*.html set spell spelllang=en_us
+" Only enable spell check in markdown, html, tex and git commit messages
+autocmd BufRead,BufNewFile *.md,*.html,*.tex set spell spelllang=en_us
 autocmd FileType gitcommit set spell spelllang=en_us
 
 " ============================================================================
