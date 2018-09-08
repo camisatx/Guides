@@ -6,6 +6,7 @@ This document is a collection of notes I've assembled from my time learning how 
 
 - [Terminology](#terminology)
 - [Single Container Setup](#single-container-setup)
+- [Multiple Containers via Declarative Config](#multiple-containers-via-declarative-config)
 
 ## Terminology
 
@@ -16,6 +17,10 @@ This document is a collection of notes I've assembled from my time learning how 
 **Service** - provides networking and IP support to the application's pods; Kubernetes Engine creates an external IP and a load balancer for the application
 
 ## Single Container Setup
+
+You are able to setup a cluster based on a single Docker container using `kubectl run` and `kubectl expose`.
+
+### Example
 
 This process spins up a single Docker container within a GKE cluster. It follows the [hello-app tutorial](https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app) from the Google Cloud docs.
 
@@ -48,7 +53,7 @@ Steps:
 
     8.1. Building the new container: `docker build -t gcr.io/${PROJECT_ID}/hello-app:v2 .`
 
-    8.2. Push the container to Google Container Registry: `gcloud docker -- push gcr.io/${PROJECT_ID}/hello-app:v2`
+    8.2. Push the container to Google Container Registry: `docker push gcr.io/${PROJECT_ID}/hello-app:v2`
 
     8.3. Apply a rolling update to the existing deployment: `kubectl set image deployment/hello-web hello-web=gcr.io/${PROJECT_ID}/hello-app:v2`
 
@@ -61,3 +66,33 @@ Steps:
     9.3. Delete the containers stored in the Google Container Repository
 
     9.4. Delete the containers stored locally: `docker image rm gcr.io/${PROJECT_ID}/hello-app`
+
+## Multiple Containers via Declarative Config
+
+YAML based configuration files can be used to specify the values for container deployment and service creation. The deployment and service variables can be combined into a single file or separate files.
+
+Run the configuration files with: `kubectl apply -f <directory>/`. `kubectl apply` can be used for both creating and updating objects.
+
+Objects can be deleted with: `kubectl delect -f <filename>`.
+
+View the current configuration of the object with: `kubectl get -f <filename|url> -o yaml`
+
+### Example
+
+The following example is taken from the [Redis and PHP Guestbook](https://cloud.google.com/kubernetes-engine/docs/tutorials/guestbook) tutorial from the Google Cloud docs.
+
+Steps:
+
+1. Specify the project environment within the terminal for easy retrieval: `export PROJECT_ID="$(gcloud config get-value project -q)"`
+
+    1.1. Change the default `gcloud` environment with: `gcloud config set project PROJECT_ID` where `PROJECT_ID` is the exact name of the environment you specified within the Google Cloud console
+
+2. Create the container cluster (a pool of Compute Engine VM instances running Kubernetes) where the containers will be run: `gcloud container clusters create guestbook --num-nodes=3`
+
+    2.1. If you are using an existing cluster, retrieve the cluster's credentials with: `gcloud container clusters get-credentials guestbook`
+
+3. Deploy the object and starting the service by running `kubectl create -f <yaml-file>` for both configuration files
+
+4. View the deployed objects with: `kubectl get pods`
+
+5. View the active services with: `kubectl get services`
