@@ -33,7 +33,7 @@ Steps:
 
     2.1. Optional - Test the container locally: `docker run --rm -p 8080:8080 gcr.io/${PROJECT_ID}/hello-app:v1`
 
-3. Push the Docker container to the Google Container Registry: `docker push grc.io/${PROJECT_ID}/hello-app:v1`
+3. Push the Docker container to the Google Container Registry: `docker push gcr.io/${PROJECT_ID}/hello-app:v1`
 
     3.1. You may need to authenticate the Docker command line tool to access the Container Registry with: `gcloud auth configure-docker`
 
