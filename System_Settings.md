@@ -4,16 +4,17 @@
 
 ### Ubuntu Store
 
-- Caffeine
+- Caffeine Indicator
 - System Load Indicator
 
 ### Online
 
 - Calibre (book manager - optional)
 - Chrome
-- Dropbox
+- ~~Dropbox~~ Nextcloud
 - Foxit
 - GIMP (photo editing - optional)
+- gThumb (image viewer - optional)
 - Kdenlive (video editing - optional)
 - Signal
 - Steam
