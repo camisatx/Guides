@@ -37,9 +37,9 @@ sudo apt-get install fail2ban -y
 # Copy the default jail.conf file to a new file called jail.local
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 # Change the ban time from 600 seconds (10 min) to 86,400 seconds (1 day) :)
-perl -pi -e 's/bantime  = 600/bantime  = 86400/g' /etc/fail2ban/jail.local
+perl -pi -e 's/bantime  = 10m/bantime  = 1440m/g' /etc/fail2ban/jail.local
 # Change the find time from 600 seconds (10 min) to 3,600 seconds (1 hour)
-perl -pi -e 's/findtime  = 600/findtime  = 3600/g' /etc/fail2ban/jail.local
+perl -pi -e 's/findtime  = 10m/findtime  = 60m/g' /etc/fail2ban/jail.local
 sudo service fail2ban restart
 
 
@@ -58,7 +58,7 @@ echo "Installing Maldet..."
 cd /usr/local/src/
 sudo wget http://www.rfxn.com/downloads/maldetect-current.tar.gz
 sudo tar -xzf maldetect-current.tar.gz
-cd maldetect-*
+cd */
 sudo sh ./install.sh
 cd ..
 # Delete original download zip files
