@@ -44,6 +44,10 @@ set shiftwidth=4	    "Make indentations match to the 4 spaces of tab
 set tabstop=4		    "Change the maximum width of tab to 4 spaces width
 set expandtab		    "On pressing tab, insert 4 spaces
 set pastetoggle=<F3>    "Toggle paste mode with F3; turns off autoindent, etc.
+
+" Use 2 spaces for html, javascript files
+autocmd Filetype html setlocal ts=2 sw=2 expandtab
+autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
   
 " ============================== Scrolling ===================================
 set scrolloff=8         "Start scrolling when we're 8 lines away from margins
@@ -74,10 +78,14 @@ Plug 'tpope/vim-surround'       "Change surrounding characters easily
 "   sudo apt update && sudo apt install build-essential cmake python-dev
 "       python3-dev
 "   ~/.vim/plugged/youcompleteme/install.py --clang-completer
-Plug 'valloric/youcompleteme'
+"Plug 'valloric/youcompleteme'
 
 " Must use the system python package when installing youcompleteme
-let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+"let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+
+" ============================== Deep TabNine ================================
+" Free version; ONLY use this OR YouCompleteMe
+"Plug 'zxqfl/tabnine-vim'
 
 " =========================== Syntastic settings =============================
 Plug 'scrooloose/syntastic'     "Syntax checker
@@ -93,6 +101,8 @@ let g:syntastic_check_on_wq = 0
 
 " Use flake8 if it is installed, otherwise fall back to pyflakes
 let g:syntastic_python_checkers = ['flake8', 'pyflakes']
+" Ignore line under-indented, and block comment not starting with '# '
+let g:syntastic_python_flake8_args="--ignore=E126,E127,E128,E265,E501,E226,E266,W504"
 
 " ============================== Git =========================================
 
@@ -112,6 +122,11 @@ let g:airline_powerline_fonts = 1   "Enable airline to use powerline fonts
 
 "Must install powerline fonts to system in order for fancy characters to work
 " https://github.com/powerline/fonts
+"
+" ====================== JavaScript Highlighter ==============================
+
+Plug 'pangloss/vim-javascript'  "Base JS highlighter
+Plug 'mxw/vim-jsx'              "JSX highlighter
 
 " =========================== Color Scheme ===================================
 
@@ -137,3 +152,4 @@ call plug#end()
 colorscheme hybrid
 "colorscheme seti
 "colorscheme spacegray
+"colorscheme lightning
