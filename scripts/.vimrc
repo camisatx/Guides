@@ -65,23 +65,27 @@ autocmd FileType gitcommit set spell spelllang=en_us
 " ======================== Install 3rd Party Plugins =========================
 call plug#begin('~/.vim/plugged')
 
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
 
 " ========================= Surrounding Characters ===========================
 
 Plug 'raimondi/delimitmate'		"Automatic closing characters
-
 Plug 'tpope/vim-surround'       "Change surrounding characters easily
+Plug 'luochen1990/rainbow'      "Rainbow parentheseparenthsiss
+let g:rainbow_active = 1
 
 " ============================== YouCompleteMe ================================
 " Run to install:
 "   sudo apt update && sudo apt install build-essential cmake python-dev
 "       python3-dev
-"   ~/.vim/plugged/youcompleteme/install.py --clang-completer
+"   sudo apt install mono-complete golang nodejs default-jdk npm
+"   ~/.vim/plugged/youcompleteme/install.py --all
 "Plug 'valloric/youcompleteme'
+" YouCompleteMe fork with integrated Tabnine
+Plug 'https://github.com/tabnine/YouCompleteMe.git'
 
 " Must use the system python package when installing youcompleteme
-"let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
 
 " ============================== Deep TabNine ================================
 " Free version; ONLY use this OR YouCompleteMe
