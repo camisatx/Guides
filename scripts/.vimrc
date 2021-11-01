@@ -27,7 +27,11 @@ set nofoldenable
 "Run 'sudo apt install vim-gnome' to add clipboard to vim
 "Check if vim clipboard is activated with 'vim --version'
 "Use '"*y' to copy selected to clipboard and '"*p' to paste from clipboard
-set clipboard=unnamedplus
+if system('uname -s') == "Darwin\n"
+    set clipboard=unamed        "OSX
+else
+    set clipboard=unnamedplus   "Linux
+endif
 
 " ========================= Turn Off Swap Files ==============================
 set noswapfile
@@ -157,3 +161,8 @@ colorscheme hybrid
 "colorscheme seti
 "colorscheme spacegray
 "colorscheme lightning
+
+" =========================== Mac Commands ===================================
+if system('uname -s') == "Darwin\n"
+    set backspace=indent,eol, start
+endif
