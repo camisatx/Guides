@@ -24,7 +24,7 @@ set foldmethod=indent
 set nofoldenable
 
 "Enable the clipboard use for copy and paste
-"Run 'sudo apt install vim-gnome' to add clipboard to vim
+"Run 'sudo apt install vim-gtk3' to add clipboard to vim
 "Check if vim clipboard is activated with 'vim --version'
 "Use '"*y' to copy selected to clipboard and '"*p' to paste from clipboard
 if system('uname -s') == "Darwin\n"
@@ -107,8 +107,8 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-" Use flake8 if it is installed, otherwise fall back to pyflakes
-let g:syntastic_python_checkers = ['flake8', 'pyflakes']
+" Use mypy if it is installed, otherwise fall back to flake8 or pyflakes
+let g:syntastic_python_checkers = ['mypy', 'flake8', 'pyflakes']
 " Ignore line under-indented, and block comment not starting with '# '
 let g:syntastic_python_flake8_args="--ignore=E126,E127,E128,E265,E501,E226,E266,W504"
 
